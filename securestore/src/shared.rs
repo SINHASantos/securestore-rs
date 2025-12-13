@@ -81,7 +81,8 @@ where
     let b64: String = Deserialize::deserialize(deserializer)?;
 
     let mut result = [0u8; IV_SIZE];
-    BASE64.decode_slice(&b64, &mut result)
+    BASE64
+        .decode_slice(&b64, &mut result)
         .map_err(|e| Error::custom(e.to_string()))?;
 
     Ok(result)
@@ -95,7 +96,8 @@ where
     let b64: String = Deserialize::deserialize(deserializer)?;
 
     let mut result = [0u8; HMAC_SIZE];
-    BASE64.decode_slice(&b64, &mut result)
+    BASE64
+        .decode_slice(&b64, &mut result)
         .map_err(|e| Error::custom(e.to_string()))?;
 
     Ok(result)
@@ -270,7 +272,8 @@ impl CryptoKeys {
             if state != ParseState::Complete {
                 return Err(ErrorKind::InvalidKeyfile.into());
             }
-            let decoded = BASE64.decode(&encoded)
+            let decoded = BASE64
+                .decode(&encoded)
                 .map_err(|e| Error::from_inner(ErrorKind::InvalidKeyfile, e))?;
             if decoded.len() != KEY_COUNT * KEY_LENGTH {
                 return Err(ErrorKind::InvalidKeyfile.into());

@@ -609,8 +609,8 @@ fn add_path_to_ignore_file(
     path: &Path,
 ) -> Result<bool, Box<dyn std::error::Error + Send + Sync>> {
     use std::fs::File;
-    use std::io::BufReader;
     use std::io::prelude::*;
+    use std::io::BufReader;
 
     // Currently, only ignore files that are in the same dir as the path to be
     // ignored are supported; this drastically simplifies both checking whether

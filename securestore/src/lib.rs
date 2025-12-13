@@ -133,7 +133,7 @@ pub enum KeySource<'a> {
 /// This type is used internally for generic function overload purposes. See and
 /// use [`KeySource`] instead.
 pub trait GenericKeySource {
-    fn key_source(&self) -> KeySource;
+    fn key_source(&self) -> KeySource<'_>;
 }
 
 impl<'a> KeySource<'a> {
@@ -152,13 +152,13 @@ impl<'a> KeySource<'a> {
 }
 
 impl<P: AsRef<Path>> GenericKeySource for P {
-    fn key_source(&self) -> KeySource {
+    fn key_source(&self) -> KeySource<'_> {
         KeySource::Path(self.as_ref())
     }
 }
 
 impl<'a> GenericKeySource for KeySource<'_> {
-    fn key_source(&self) -> KeySource {
+    fn key_source(&self) -> KeySource<'_> {
         match self {
             Self::Csprng => KeySource::Csprng,
             Self::Path(p) => KeySource::Path(p),
@@ -169,7 +169,7 @@ impl<'a> GenericKeySource for KeySource<'_> {
 }
 
 impl GenericKeySource for &KeySource<'_> {
-    fn key_source(&self) -> KeySource {
+    fn key_source(&self) -> KeySource<'_> {
         (*self).key_source()
     }
 }
